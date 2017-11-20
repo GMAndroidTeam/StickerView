@@ -782,6 +782,29 @@ public class StickerView extends FrameLayout {
     }
   }
 
+  /**
+   * save stickerView with an extra bitmap
+   *
+   * @param file        the file to save
+   * @param imageBitmap the extra bitmap
+   */
+  public void save(@NonNull File file, Bitmap imageBitmap) {
+    try {
+      Bitmap stickerBitmap = createBitmap();
+      Bitmap destBitmap = Bitmap.createBitmap(
+              Math.max(imageBitmap.getWidth(), stickerBitmap.getWidth()),
+              Math.max(imageBitmap.getHeight(), stickerBitmap.getHeight()),
+              Bitmap.Config.ARGB_8888);
+      Canvas canvas = new Canvas(destBitmap);
+      canvas.drawBitmap(imageBitmap, new Matrix(), null);
+      canvas.drawBitmap(stickerBitmap, new Matrix(), null);
+      StickerUtils.saveImageToGallery(file, destBitmap);
+      StickerUtils.notifySystemGallery(getContext(), file);
+    } catch (IllegalArgumentException | IllegalStateException ignored) {
+      //
+    }
+  }
+
   @NonNull public Bitmap createBitmap() throws OutOfMemoryError {
     handlingSticker = null;
     Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
