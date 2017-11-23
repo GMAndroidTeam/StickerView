@@ -18,31 +18,52 @@
 
   </android.support.v7.widget.Toolbar>
 
-  <com.xiaopo.flying.sticker.StickerView
-      android:id="@+id/sticker_view"
+  <RelativeLayout
+      android:id="@+id/drawing_view_container"
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:layout_gravity="center"
-      android:layout_weight="1"
-      app:showBorder="true"
-      app:showIcons="true"
-      >
-
-    <uk.co.senab.photoview.PhotoView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/haizewang_90"
-        />
+      android:layout_weight="1">
 
     <ImageView
+        android:id="@+id/setPhotoDate_iv_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/border"
-        />
-  </com.xiaopo.flying.sticker.StickerView>
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:src="@drawable/haizewang_90"
+        android:scaleType="fitCenter" />
 
+    <com.xiaopo.flying.sticker.StickerView
+        android:id="@+id/sticker_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        app:showBorder="true"
+        app:showIcons="true" />
+  </RelativeLayout>
 
+  <!--<com.xiaopo.flying.sticker.StickerView-->
+      <!--android:id="@+id/sticker_view"-->
+      <!--android:layout_width="match_parent"-->
+      <!--android:layout_height="0dp"-->
+      <!--android:layout_gravity="center"-->
+      <!--android:layout_weight="1"-->
+      <!--app:showBorder="true"-->
+      <!--app:showIcons="true"-->
+      <!--/>-->
+
+    <!--<uk.co.senab.photoview.PhotoView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/haizewang_90"-->
+        <!--/>-->
+
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/border"-->
+        <!--/>-->
   <HorizontalScrollView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

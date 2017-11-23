@@ -2,7 +2,9 @@ package com.xiaopo.flying.stickerview;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +16,7 @@ import android.text.Layout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.xiaopo.flying.sticker.BitmapStickerIcon;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
   public static final int PERM_RQST_CODE = 110;
   private StickerView stickerView;
   private TextSticker sticker;
+  private ImageView img_photo;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     stickerView = (StickerView) findViewById(R.id.sticker_view);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    img_photo = (ImageView) findViewById(R.id.setPhotoDate_iv_photo);
 
     //currently you can config your own icons and icon event
     //the event you can custom
@@ -70,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
     //default icon layout
     //stickerView.configDefaultIcons();
 
-    stickerView.setBackgroundColor(Color.WHITE);
     stickerView.setLocked(false);
     stickerView.setConstrained(true);
 
@@ -140,7 +144,8 @@ public class MainActivity extends AppCompatActivity {
           if (item.getItemId() == R.id.item_save) {
             File file = FileUtil.getNewFile(MainActivity.this, "Sticker");
             if (file != null) {
-              stickerView.save(file);
+              Bitmap bmp = ((BitmapDrawable)img_photo.getDrawable()).getBitmap();
+              stickerView.save(file, bmp);
               Toast.makeText(MainActivity.this, "saved in " + file.getAbsolutePath(),
                       Toast.LENGTH_SHORT).show();
             } else {

@@ -342,7 +342,9 @@ public class StickerView extends FrameLayout {
     }
 
     if (handlingSticker != null) {
-      onStickerOperationListener.onStickerTouchedDown(handlingSticker);
+      if (null != onStickerOperationListener) {
+        onStickerOperationListener.onStickerTouchedDown(handlingSticker);
+      }
       downMatrix.set(handlingSticker.getMatrix());
       if (bringToFrontCurrentSticker) {
         stickers.remove(handlingSticker);
@@ -791,13 +793,14 @@ public class StickerView extends FrameLayout {
   public void save(@NonNull File file, Bitmap imageBitmap) {
     try {
       Bitmap stickerBitmap = createBitmap();
-      Bitmap destBitmap = Bitmap.createBitmap(
-              Math.max(imageBitmap.getWidth(), stickerBitmap.getWidth()),
-              Math.max(imageBitmap.getHeight(), stickerBitmap.getHeight()),
-              Bitmap.Config.ARGB_8888);
+      Bitmap destBitmap = Bitmap.createBitmap(imageBitmap.getWidth(), imageBitmap.getHeight(), Bitmap.Config.ARGB_8888);
       Canvas canvas = new Canvas(destBitmap);
+      Matrix stickerMatrix = new Matrix();
+      float scaleX = (float)imageBitmap.getWidth() / (float) stickerBitmap.getWidth();
+      float scaleY = (float) imageBitmap.getHeight() / (float) stickerBitmap.getHeight();
+      stickerMatrix.postScale(scaleX, scaleY);
       canvas.drawBitmap(imageBitmap, new Matrix(), null);
-      canvas.drawBitmap(stickerBitmap, new Matrix(), null);
+      canvas.drawBitmap(stickerBitmap, stickerMatrix, null);
       StickerUtils.saveImageToGallery(file, destBitmap);
       StickerUtils.notifySystemGallery(getContext(), file);
     } catch (IllegalArgumentException | IllegalStateException ignored) {
