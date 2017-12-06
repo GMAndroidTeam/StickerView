@@ -36,6 +36,7 @@ import java.util.List;
 public class StickerView extends FrameLayout {
 
   private final boolean showIcons;
+  private final boolean showFlipIcon;//是否显示翻转按钮
   private final boolean showBorder;
   private final boolean bringToFrontCurrentSticker;
 
@@ -116,6 +117,7 @@ public class StickerView extends FrameLayout {
     try {
       a = context.obtainStyledAttributes(attrs, R.styleable.StickerView);
       showIcons = a.getBoolean(R.styleable.StickerView_showIcons, false);
+      showFlipIcon = a.getBoolean(R.styleable.StickerView_showFlipIcon, false);
       showBorder = a.getBoolean(R.styleable.StickerView_showBorder, false);
       bringToFrontCurrentSticker =
           a.getBoolean(R.styleable.StickerView_bringToFrontCurrentSticker, false);
@@ -124,7 +126,7 @@ public class StickerView extends FrameLayout {
       borderPaint.setColor(a.getColor(R.styleable.StickerView_borderColor, Color.BLACK));
       borderPaint.setAlpha(a.getInteger(R.styleable.StickerView_borderAlpha, 128));
 
-      configDefaultIcons();
+      configDefaultIcons(showFlipIcon);
     } finally {
       if (a != null) {
         a.recycle();
@@ -132,7 +134,7 @@ public class StickerView extends FrameLayout {
     }
   }
 
-  public void configDefaultIcons() {
+  public void configDefaultIcons(boolean showFlipIcon) {
     BitmapStickerIcon deleteIcon = new BitmapStickerIcon(
         ContextCompat.getDrawable(getContext(), R.drawable.sticker_ic_close_white_18dp),
         BitmapStickerIcon.LEFT_TOP);
@@ -141,15 +143,19 @@ public class StickerView extends FrameLayout {
         ContextCompat.getDrawable(getContext(), R.drawable.sticker_ic_scale_white_18dp),
         BitmapStickerIcon.RIGHT_BOTOM);
     zoomIcon.setIconEvent(new ZoomIconEvent());
-    BitmapStickerIcon flipIcon = new BitmapStickerIcon(
-        ContextCompat.getDrawable(getContext(), R.drawable.sticker_ic_flip_white_18dp),
-        BitmapStickerIcon.RIGHT_TOP);
-    flipIcon.setIconEvent(new FlipHorizontallyEvent());
 
     icons.clear();
     icons.add(deleteIcon);
     icons.add(zoomIcon);
-    icons.add(flipIcon);
+
+    if (showFlipIcon){
+      BitmapStickerIcon flipIcon = new BitmapStickerIcon(
+              ContextCompat.getDrawable(getContext(), R.drawable.sticker_ic_flip_white_18dp),
+              BitmapStickerIcon.RIGHT_TOP);
+      flipIcon.setIconEvent(new FlipHorizontallyEvent());
+      icons.add(flipIcon);
+    }
+
   }
 
   /**
