@@ -39,6 +39,7 @@ public class StickerView extends FrameLayout {
   private final boolean showFlipIcon;//是否显示翻转按钮
   private final boolean showBorder;
   private final boolean bringToFrontCurrentSticker;
+  private Paint mStickerIconPaint = new Paint(); //边框四个按钮的画笔
 
   @IntDef({
       ActionMode.NONE, ActionMode.DRAG, ActionMode.ZOOM_WITH_TWO_FINGER, ActionMode.ICON,
@@ -113,6 +114,7 @@ public class StickerView extends FrameLayout {
   public StickerView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+    mStickerIconPaint.setColor(Color.TRANSPARENT);
     TypedArray a = null;
     try {
       a = context.obtainStyledAttributes(attrs, R.styleable.StickerView);
@@ -249,7 +251,7 @@ public class StickerView extends FrameLayout {
               configIconMatrix(icon, x4, y4, rotation);
               break;
           }
-          icon.draw(canvas, borderPaint);
+          icon.draw(canvas, mStickerIconPaint);
         }
       }
     }
@@ -345,7 +347,7 @@ public class StickerView extends FrameLayout {
       currentMode = ActionMode.ICON;
       currentIcon.onActionDown(this, event);
     } else {
-      handlingSticker = findHandlingSticker();
+      handlingSticker = findHandlingSticker(); //zly  这里可以看一下
     }
 
     if (handlingSticker != null) {
