@@ -716,6 +716,7 @@ public class StickerView extends FrameLayout {
 
   public StickerView addSticker(@NonNull final Sticker sticker,
       final @Sticker.Position int position) {
+    isInChooseSticker = true ;
     if (ViewCompat.isLaidOut(this)) {
       addStickerImmediately(sticker, position);
     } else {
