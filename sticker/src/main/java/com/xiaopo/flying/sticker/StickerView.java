@@ -41,6 +41,8 @@ public class StickerView extends FrameLayout {
   private final boolean bringToFrontCurrentSticker;
   private Paint mStickerIconPaint = new Paint(); //边框四个按钮的画笔
 
+  private boolean isInChooseSticker = true;
+
   @IntDef({
       ActionMode.NONE, ActionMode.DRAG, ActionMode.ZOOM_WITH_TWO_FINGER, ActionMode.ICON,
       ActionMode.CLICK
@@ -208,7 +210,7 @@ public class StickerView extends FrameLayout {
       }
     }
 
-    if (handlingSticker != null && !locked && (showBorder || showIcons)) {
+    if (handlingSticker != null && !locked && (showBorder || showIcons) && isInChooseSticker) {
 
       getStickerPoints(handlingSticker, bitmapPoints);
 
@@ -347,10 +349,11 @@ public class StickerView extends FrameLayout {
       currentMode = ActionMode.ICON;
       currentIcon.onActionDown(this, event);
     } else {
-      handlingSticker = findHandlingSticker(); //zly  这里可以看一下
+      handlingSticker = findHandlingSticker();
     }
 
     if (handlingSticker != null) {
+      isInChooseSticker = true;
       if (null != onStickerOperationListener) {
         onStickerOperationListener.onStickerTouchedDown(handlingSticker);
       }
@@ -359,11 +362,10 @@ public class StickerView extends FrameLayout {
         stickers.remove(handlingSticker);
         stickers.add(handlingSticker);
       }
+    }else {
+      isInChooseSticker = false;
     }
 
-    if (currentIcon == null && handlingSticker == null) {
-      return false;
-    }
     invalidate();
     return true;
   }
